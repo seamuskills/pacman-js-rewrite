@@ -32,14 +32,13 @@ let dotScore = 10
 let dotsToRamp = 10
 let startLevel = 1
 
-if (localStorage.getItem("settings") == "true"){
+if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
 	localStorage.setItem("dotWave",String(dotWave))
 	localStorage.setItem("livesEnabled",String(livesEnabled))
 }else{
-	localStorage.getItem("settings")
-	localStorage.getItem("dotWave")
-	localStorage.getItem("livesEnabled")
+	dotWave = localStorage.getItem("dotWave")
+	livesEnabled = localStorage.getItem("livesEnabled")
 }
 
 window.onkeydown = ({key}) => { //on key down

@@ -10,8 +10,8 @@ buttons = {
 	},
 	"options":{
 		"back": () => {menuIndex = "main";selectedIndex = 0},
-		"`wavey dots enabled:${dotWave}`": () => {dotWave = !dotWave},
-		"`lives enabled:${livesEnabled}`": () => {livesEnabled = !livesEnabled},
+		"`wavey dots enabled:${dotWave}`": () => {dotWave = !dotWave; localStorage.setItem("dotWave",String(dotWave))},
+		"`lives enabled:${livesEnabled}`": () => {livesEnabled = !livesEnabled; localStorage.setItem("livesEnabled",String(livesEnabled))},
 		"`starting speed:x${round(gameSpeed * 10,1)}`": () => {gameSpeed += 0.01; if (gameSpeed > 0.2){gameSpeed = 0.1}}
 	}
 }
