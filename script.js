@@ -25,6 +25,22 @@ let fright = 0 //how long a power pellet has left
 let frightScore = 200 //score for eating a ghost
 let texts = [] // list of display text instances
 let score = 0 //score of the player
+let gameState = "menu"
+let livesEnabled = true
+let dotRamp = true
+let dotScore = 10
+let dotsToRamp = 10
+let startLevel = 1
+
+if (localStorage.getItem("settings") == "true"){
+	localStorage.setItem("settings","true")
+	localStorage.setItem("dotWave",String(dotWave))
+	localStorage.setItem("livesEnabled",String(livesEnabled))
+}else{
+	localStorage.getItem("settings")
+	localStorage.getItem("dotWave")
+	localStorage.getItem("livesEnabled")
+}
 
 window.onkeydown = ({key}) => { //on key down
 	if (!input.includes(key)){ //if key not already in list
@@ -102,12 +118,14 @@ class dot{
 			push() //save draw settings
 			fill(0xff) //fill white
 			noStroke() //no lines
+
+			let offset = this.pos.x * this.pos.y
 			
 			translate(
 				this.disp.x + 
-				Math.sin(ticks/10 + this.pos.x),
+				Math.sin(ticks/10 + offset),
 				this.disp.y + 
-				Math.cos(ticks/10 )//+ this.pos.y)
+				Math.cos(ticks/10 + offset)//+ this.pos.y)
 			) //translate the drawing to the right position
 			//rotate((ticks+this.pos.x)*-4) //rotate the drawing
 			circle(0,0,CELL*0.3) //draw the dot off center so it orbits around the center
@@ -115,7 +133,7 @@ class dot{
 		}else{
 			fill(0xff)
 			noStroke()
-			circle(disp.x,disp.y,CELL*0.3)
+			circle(this.disp.x,this.disp.y,CELL*0.3)
 		}
 	}
 }
@@ -134,6 +152,7 @@ function reset(full=false){ //reset the game
 	inters = [] //clear intersections
 	tunnels = [] //clear tunnel instances
 	ghosts = [] //clear ghosts
+	dotScore = 10
 	if (full){ //if full
 		lives = 3 //reset lives
 		dots = [] //clear dots
@@ -157,7 +176,16 @@ function setup(){ //setup the game
 	textAlign(CENTER,CENTER) //align text centered
 }
 
-function draw(){ //mainloop
+function draw(){
+	if (gameState == "game"){
+		game()
+	}
+	if (gameState == "menu"){
+		drawMenuButtons()
+	}
+}
+
+function game(){ //mainloop
 	ticks++ //count up ticks
 	background(0) //make bg black
 	if (intro){// if im in the intro
@@ -234,6 +262,7 @@ function draw(){ //mainloop
 	text(gateText,(anchor+13+0.5)*CELL,16.5*CELL) //draw gate text
 
 	text(`level: ${level}`,((anchor + textMap[0].length + 0.5) *CELL)-font.textBounds(`level: ${level}`,0,0,CELL/2).w,(textMap.length+ 0.5)*CELL)
+	text (`{${score}}`,window.innerWidth/2,(textMap.length+ 0.5)*CELL)
 	
 	if (frameRate() < 30){
 		fill(0xff,0,0)

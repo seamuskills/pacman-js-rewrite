@@ -57,13 +57,19 @@ class player{ //defining the player
 			if (i.pos.dist(this.pos.copy().add(createVector(0.5,0.5))) < 0.5){ //check if inside dot
 				if (i instanceof powerPellet){ //if its a power pellet
 					fright = 600 - (10*level) //apply fright decreased by level 
+					score += dotScore * 5
 					for (let g of ghosts){ //loop ghosts
 						g.eaten = false //make them not eaten
-						frightScore = 200 //reset fright score
+						frightScore = 200 - (level-1)*2 //reset fright score
 					}
 				}
 				dots.splice(dots.indexOf(i),1) //remove eaten dot
-				score += 10 //add to score
+				score += dotScore //add to score
+				dotsToRamp--
+				if (dotsToRamp == 0 && dotScore < 100){
+					dotsToRamp = 10
+					dotScore += 10
+				}
 			}
 		}
 		for (let i of ghosts){ //loop ghosts
@@ -89,7 +95,7 @@ class player{ //defining the player
 	die(){ // gameloop for dead pacman
 		this.deadTicks++ //increase dead ticks
 		if (this.deadTicks > 180){ //have I been dead for a minimum of 2 seconds
-			lives-- //subtract a life
+			if (livesEnabled == true){lives--} //subtract a life
 			reset(lives < 1) //reset (only full reset if 0 lives left)
 			intro = true //we are in the intro again
 		}

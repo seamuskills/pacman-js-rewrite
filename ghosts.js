@@ -138,9 +138,13 @@ class ghost{
 					if (!validDirections.includes(direction)){continue} //if this isn't a valid direction, skip this intersection
 					if (shortestInter == null){shortestInter = inter; shortest = direction; continue} //set this to the shortest intersection if there isn't one
 					else{
+						try{
 						if (inter.pos.dist(this.target) < shortestInter.pos.dist(this.target)){ //if this connected intersection is closer to pacman than the current shortest than this is the shortest
 							shortestInter = inter
 							shortest = direction
+						}
+						}catch(e){
+							print(this.pos)
 						}
 					}
 				}
@@ -172,7 +176,7 @@ class ghost{
 		}else if (this.eyes){ //if eyes be gray and transparent
 			fill(0xaa,0xaa,0xaa,128)
 		}else if (fright >= 0){ //or be blue and flash white toward the end of the power pellet
-			fill(0x0,0x0,0xff)
+			fill(0x0,0x0,0xaa)
 			if (fright <= 180 && ticks % 60 < 30){
 				fill(0xff)
 			}
