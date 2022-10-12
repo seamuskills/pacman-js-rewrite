@@ -292,7 +292,7 @@ function game(){ //mainloop
 	fill(0xff)
 
 	if (speedRamp != 0){
-		text(`${round(gameSpeed*10,1)}`,CELL*2,window.innerWidth/2)
+		text(`${round(gameSpeed*10,1)}`,CELL*2,window.innerHeight/2)
 	}
 	
 	textSize(CELL) //reset text size
