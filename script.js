@@ -78,13 +78,15 @@ window.onblur = () => { //when unfocused the game pauses forcably
 }
 
 class dispText{ //display text
-	constructor(t,x,y,time=500){
+	constructor(t,x,y,time=500,size=1){
 		this.text = t //text
 		this.pos = dispCoords(createVector(x,y),true) //where is it?
 		this.time = time //how long it should display?
 		texts.push(this) //add it to the list
+		this.size = size
 	}
-	show(){ //dispaly
+	show(){ //display
+		textSize(this.size*CELL)
 		this.time -= deltaTime //reduce display time
 		if (this.time <= 0){ //remove self from list when done displaying self
 			texts.splice(texts.indexOf(this),1)

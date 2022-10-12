@@ -49,16 +49,7 @@ function setupMap(resetDots){ //set up the map
 				case "+": //+ = intersection
 					new Intersection(x,y)
 					if (resetDots){ //if reset dots we want a dot on the intersections surrounded by dots
-						if (textMap[y-1][x] == "."){
-							new dot(x+0.5,y+0.5)
-						}
-						if (textMap[y+1][x] == "."){
-							new dot(x+0.5,y+0.5)
-						}
-						if (textMap[y][x+1] == "."){
-							new dot(x+0.5,y+0.5)
-						}
-						if (textMap[y][x-1] == "."){
+						if (textMap[y-1][x] == "." || textMap[y+1][x] == "." || textMap[y][x+1] == "." || textMap[y][x-1] == "."){
 							new dot(x+0.5,y+0.5)
 						}
 					}

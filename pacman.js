@@ -62,14 +62,18 @@ class player{ //defining the player
 						g.eaten = false //make them not eaten
 						frightScore = 200 - (level-1)*2 //reset fright score
 					}
+				}else{
+					print(dots.indexOf(i))
+					new dispText(`${dotScore}`,this.pos.x,this.pos.y,500,0.3)
 				}
-				dots.splice(dots.indexOf(i),1) //remove eaten dot
+				print(dots.splice(dots.indexOf(i),1)) //remove eaten dot
 				score += dotScore //add to score
 				dotsToRamp--
 				if (dotsToRamp == 0 && dotScore < 100){
 					dotsToRamp = 10
 					dotScore += 10
 				}
+				break
 			}
 		}
 		for (let i of ghosts){ //loop ghosts
