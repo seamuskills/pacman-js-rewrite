@@ -12,8 +12,24 @@ buttons = {
 		"back": () => {menuIndex = "main";selectedIndex = 0},
 		"`wavey dots enabled:${dotWave}`": () => {dotWave = !dotWave; localStorage.setItem("dotWave",String(dotWave))},
 		"`lives enabled:${livesEnabled}`": () => {livesEnabled = !livesEnabled; localStorage.setItem("livesEnabled",String(livesEnabled))},
-		"`starting speed:x${round(gameSpeed * 10,1)}`": () => {gameSpeed += 0.01; if (gameSpeed > 0.2){gameSpeed = 0.1}}
+		"`starting speed:x${round(gameSpeed * 10,1)}`": () => {gameSpeed += 0.01; if (gameSpeed > 0.2){gameSpeed = 0.1}},
+		"`starting level:${startLevel}`" : changeLevel
 	}
+}
+
+function changeLevel(){
+	let lvl = prompt("type a number for the new starting level")
+	lvl = round(Number(lvl))
+	if (Number.isNaN(lvl)){
+		alert("Input was not a number!")
+		lvl = 1
+	}
+	if (lvl <= 0){
+		alert("Input must be above 0")
+		lvl = 1
+	}
+	startLevel = lvl
+	localStorage.setItem("startLevel",lvl)
 }
 
 drawMenuButtons = () => {

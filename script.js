@@ -36,9 +36,11 @@ if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
 	localStorage.setItem("dotWave",String(dotWave))
 	localStorage.setItem("livesEnabled",String(livesEnabled))
+	localStorage.setItem("startLevel",startLevel)
 }else{
 	dotWave = localStorage.getItem("dotWave")
 	livesEnabled = localStorage.getItem("livesEnabled")
+	startLevel = localStorage.getItem("startLevel")
 }
 
 window.onkeydown = ({key}) => { //on key down
@@ -155,6 +157,7 @@ function reset(full=false){ //reset the game
 	if (full){ //if full
 		lives = 3 //reset lives
 		dots = [] //clear dots
+		level = startLevel //reset level
 	}
 	fright = 0 //reset fright ticks
 	setupMap(full) //reset map
