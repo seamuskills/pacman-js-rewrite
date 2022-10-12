@@ -214,6 +214,12 @@ function game(){ //mainloop
 			stopped = false //not stopped anymore
 		}
 	}
+
+	if (paused && input.includes("Backspace")){
+		paused = false
+		gameState = "menu"
+	}
+	
 	if (!stopped && !paused){ //if not stopped or paused fright -= 1
 		fright -= 1
 	}
