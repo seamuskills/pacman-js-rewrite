@@ -31,16 +31,23 @@ let dotRamp = true
 let dotScore = 10
 let dotsToRamp = 10
 let startLevel = 1
+let speedRamp = 0
+let rampValues = ["off","ghost","level"] //off = no ramp, ghost = ramp up on ghost eaten, level = ramp up on level progression
+let speedIncreaseAmount = 0.01 //how fast it increases
 
 if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
 	localStorage.setItem("dotWave",String(dotWave))
 	localStorage.setItem("livesEnabled",String(livesEnabled))
 	localStorage.setItem("startLevel",startLevel)
+	localStorage.setItem("speedRamp",speedRamp)
+	localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)
 }else{
 	dotWave = localStorage.getItem("dotWave")
 	livesEnabled = localStorage.getItem("livesEnabled")
 	startLevel = localStorage.getItem("startLevel")
+	speedRamp = localStorage.getItem("speedRamp")
+	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
 }
 
 window.onkeydown = ({key}) => { //on key down
@@ -160,6 +167,7 @@ function reset(full=false){ //reset the game
 		lives = 3 //reset lives
 		dots = [] //clear dots
 		level = startLevel //reset level
+		gameSpeed = 0.1
 	}
 	fright = 0 //reset fright ticks
 	setupMap(full) //reset map
@@ -255,6 +263,9 @@ function game(){ //mainloop
 				reset(true)
 				intro = true
 				introTicks = 0
+				if (speedRamp == 2){
+					gameSpeed = min(gameSpeed + speedIncreaseAmount,0.2)
+				}
 			},3000)
 		}
 	}
@@ -273,6 +284,10 @@ function game(){ //mainloop
 	}
 	text(`${round(frameRate())}`,CELL,CELL) //show framerate
 	fill(0xff)
+
+	if (speedRamp != 0){
+		text(`${round(gameSpeed*10,1)}`,CELL*2,window.innerWidth/2)
+	}
 	
 	textSize(CELL) //reset text size
 }

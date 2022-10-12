@@ -63,10 +63,9 @@ class player{ //defining the player
 						frightScore = 200 - (level-1)*2 //reset fright score
 					}
 				}else{
-					print(dots.indexOf(i))
 					new dispText(`${dotScore}`,this.pos.x,this.pos.y,500,0.3)
 				}
-				print(dots.splice(dots.indexOf(i),1)) //remove eaten dot
+				dots.splice(dots.indexOf(i),1) //remove eaten dot
 				score += dotScore //add to score
 				dotsToRamp--
 				if (dotsToRamp == 0 && dotScore < 100){
@@ -87,6 +86,9 @@ class player{ //defining the player
 					new dispText(String(frightScore),this.pos.x,this.pos.y) //display score attained
 					score += frightScore //add to score
 					frightScore *= 2 //double fright score
+					if (speedRamp == 1){
+						gameSpeed = min(round(gameSpeed + speedIncreaseAmount,3),0.2)
+					}
 				}else if (i.eyes == false){ //if they are not eyes
 					this.dead = true //we are dead now X(
 					this.deadTicks = 0 //I have not been dead for long...
