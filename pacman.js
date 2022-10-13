@@ -60,7 +60,7 @@ class player{ //defining the player
 					score += dotScore * 5
 					for (let g of ghosts){ //loop ghosts
 						g.eaten = false //make them not eaten
-						frightScore = 200 - (level-1)*2 //reset fright score
+						frightScore = 200 //reset fright score
 					}
 				}else{
 					new dispText(`${dotScore}`,this.pos.x,this.pos.y,500,0.3)
@@ -89,6 +89,7 @@ class player{ //defining the player
           ghostsRamp--
 					if (speedRamp == 1 && ghostsRamp <= 0){
 						gameSpeed = min(round(gameSpeed + speedIncreaseAmount,3),0.2)
+            ghostsRamp = 4
 					}
 				}else if (i.eyes == false){ //if they are not eyes
 					this.dead = true //we are dead now X(
@@ -103,6 +104,8 @@ class player{ //defining the player
 		this.deadTicks++ //increase dead ticks
 		if (this.deadTicks > 180){ //have I been dead for a minimum of 2 seconds
 			if (livesEnabled == true){lives--} //subtract a life
+      print(livesEnabled)
+      print(livesEnabled == true)
 			reset(lives < 1) //reset (only full reset if 0 lives left)
 			intro = true //we are in the intro again
 		}

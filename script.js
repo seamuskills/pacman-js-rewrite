@@ -45,7 +45,7 @@ if (localStorage.getItem("settings") == null){
 	localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)
 }else{
 	dotWave = localStorage.getItem("dotWave")
-	livesEnabled = localStorage.getItem("livesEnabled")
+	livesEnabled = Boolean(localStorage.getItem("livesEnabled"))
 	startLevel = localStorage.getItem("startLevel")
 	speedRamp = localStorage.getItem("speedRamp")
 	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
@@ -165,10 +165,12 @@ function reset(full=false){ //reset the game
 	ghosts = [] //clear ghosts
 	dotScore = 10
 	if (full){ //if full
-		lives = 3 //reset lives
 		dots = [] //clear dots
-		level = startLevel //reset level
-		gameSpeed = 0.1
+    if (lives <= 0){
+		  level = startLevel //reset level
+		  gameSpeed = 0.1
+      lives = 3 //reset lives
+    }
 	}
 	fright = 0 //reset fright ticks
 	setupMap(full) //reset map

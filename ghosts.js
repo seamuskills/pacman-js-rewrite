@@ -144,7 +144,6 @@ class ghost{
 							shortest = direction
 						}
 						}catch(e){
-							print(this.pos)
 						}
 					}
 				}
