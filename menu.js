@@ -5,7 +5,7 @@ let selectedIndex = 0
 
 buttons = {
 	"main":{
-		"play": () => {gameState = "game"; reset(2)},
+		"play": () => {gameState = "game"; lives = 0; reset(1)},
 		"options": () => {menuIndex = "options";selectedIndex = 0}
 	},
 	"options":{
