@@ -34,6 +34,7 @@ let startLevel = 1
 let speedRamp = 0
 let rampValues = ["off","ghost","level"] //off = no ramp, ghost = ramp up on ghost eaten, level = ramp up on level progression
 let speedIncreaseAmount = 0.01 //how fast it increases
+let ghostsRamp = 4 //amount of ghosts needing to be eaten to speed ramp up
 
 if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")

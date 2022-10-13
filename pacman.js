@@ -86,7 +86,8 @@ class player{ //defining the player
 					new dispText(String(frightScore),this.pos.x,this.pos.y) //display score attained
 					score += frightScore //add to score
 					frightScore *= 2 //double fright score
-					if (speedRamp == 1){
+          ghostsRamp--
+					if (speedRamp == 1 && ghostsRamp <= 0){
 						gameSpeed = min(round(gameSpeed + speedIncreaseAmount,3),0.2)
 					}
 				}else if (i.eyes == false){ //if they are not eyes
