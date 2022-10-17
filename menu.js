@@ -15,7 +15,8 @@ buttons = {
 		"`starting speed:x${round(gameSpeed * 10,1)}`": () => {gameSpeed += 0.01; if (gameSpeed > 0.2){gameSpeed = 0.1}},
 		"`starting level:${startLevel}`" : changeLevel,
 		"`speed added per ramp: +${round(speedIncreaseAmount * 10,3)}`": () => {speedIncreaseAmount += 0.001; if (speedIncreaseAmount > 0.1){speedIncreaseAmount = 0.01}; speedIncreaseAmount = round(speedIncreaseAmount,3); localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)},
-		"`speed ramp setting: ${rampValues[speedRamp]}`": () => {speedRamp = (speedRamp + 1) % 3; localStorage.setItem("speedRamp",speedRamp)}
+		"`speed ramp setting: ${rampValues[speedRamp]}`": () => {speedRamp = (speedRamp + 1) % 3; localStorage.setItem("speedRamp",speedRamp)},
+    "`use sprites: ${useSprites}`" : () => {useSprites = !useSprites; localStorage.setItem("useSprites",useSprites)}
 	}
 }
 

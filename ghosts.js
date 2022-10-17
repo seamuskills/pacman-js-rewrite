@@ -19,6 +19,22 @@ class ghost{
 		this.eyes = false // is this ghost eaten?
 		this.eaten = false // is this ghost exempt from current power pellet because it has just respawned?
 		this.scatter = 0 // is the ghost phase scatter?
+
+    this.sprite = null
+    switch (this.type){
+      case 0:
+        this.sprite = sprites.blinky
+        break
+      case 1:
+        this.sprite = sprites.pinky
+        break
+      case 2:
+        this.sprite = sprites.inky
+        break
+      case 3:
+        this.sprite = sprites.clyde
+        break
+    }
 	}
 	exitPen(){ //exiting the ghost pen
 		this.pen = false //im not in the pen anymore
@@ -45,7 +61,7 @@ class ghost{
 					this.target = p.pos.copy().add(createVector(-4,-4)) //replicate the bug from the original game where it targets the wrong square
 				}
 			break
-			case 2: //blinky
+			case 2: //inky
 				let pacTarg = p.pos.copy().add(directionVectors[p.dir].copy().mult(4))
 				//target ahead of pacman
 				let blinky = p //if blinky for some reason doesn't exist use pacman
@@ -157,6 +173,20 @@ class ghost{
 		if (this.pos.x < -1) {this.pos.x = textMap[0].length+1} //wrap the screen
 	}
 	show(){ //display
+		let disp = dispCoords(this.pos,true) //get display coordinates
+    
+    if (useSprites){
+      if ((fright <= 0 || this.eaten == true) && !this.eyes){
+        image(this.sprite[this.dir*2 + (ticks % 30 < 15 ? 1 : 0)],disp.x,disp.y,CELL*2,CELL*2)
+      } else if (fright > 0 && !this.eaten && !this.eyes){
+        image(sprites.fright[ticks % 60 <= 30 && fright <= 180 ? 2 : 0 + ticks % 30 < 15 ? 1 : 0],disp.x,disp.y,CELL*2,CELL*2)
+      }else if (this.eyes){
+        image(sprites.eyes[this.dir],disp.x,disp.y,CELL*2,CELL*2)
+      }
+      
+      return //dont do the rest
+    }
+    
 		if (!this.eyes && (fright <= 0 || this.eaten)){ // if not frightened or eyes
 			switch (this.type){ //display color based on ghost
 				case 0: //blinky: red
@@ -181,7 +211,6 @@ class ghost{
 			}
 		}
 		noStroke() //no lines needed
-		let disp = dispCoords(this.pos,true) //get display coordinates
 		circle(disp.x,disp.y,CELL*1.5) //draw a circle representing the ghost
 		if (debug){ //if debug enabled
 			circle((anchor+this.target.x+0.5)*CELL,(this.target.y+0.5)*CELL,CELL*1.5) //draw circle representing the target location.

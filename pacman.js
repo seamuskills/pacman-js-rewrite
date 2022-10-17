@@ -68,7 +68,7 @@ class player{ //defining the player
 				dots.splice(dots.indexOf(i),1) //remove eaten dot
 				score += dotScore //add to score
 				dotsToRamp--
-				if (dotsToRamp == 0 && dotScore < 100){
+				if (dotsToRamp <= 0 && dotScore < 100){
 					dotsToRamp = 10
 					dotScore += 10
 				}
@@ -111,12 +111,28 @@ class player{ //defining the player
 		}
 	}
 	show(){ //display event
+    let anim = 0.1+abs(33*sin(ticks*10)) //smooootthhhh animation number that goes back and forth
+    let disp = dispCoords(this.pos,true) //get display coords
+    
+    if (useSprites){
+      if (this.dead){
+        anim = max(((this.deadTicks-60) / 120),0) * 10
+        image(sprites.pacdeath[round(anim)],disp.x,disp.y,CELL*2,CELL*2)
+      }else{
+        push()
+        translate(disp.x, disp.y)
+        rotate(this.dir * -90)
+        image(sprites.pacwalk[round(abs(sin(ticks*10))*2)],0,0,CELL*2,CELL*2)
+        pop()
+      }
+      return
+    }
+    
 		noStroke() //no line needed
 		fill(0xff,0xff,0) //fill full yellow
 		let rot = this.dir*-90 //turn direction into rotation
-		let anim = 0.1+abs(33*sin(ticks*10)) //smooootthhhh animation number that goes back and forth
+    
 		if (this.dead){anim = min(179,max((this.deadTicks-60)*2,1))} //if im dead make it keep going up instead
-		let disp = dispCoords(this.pos,true) //get display coords
 		arc(disp.x,disp.y,CELL*1.5,CELL*1.5,anim+rot,(anim*-1)+rot) //using an arc to represent pacman
 		fill(0) // fill black
 		rect((anchor+textMap[0].length)*CELL,0,CELL*3,textMap.length*CELL)//blacken the sides of the map so it looks better when using warp tunnels.

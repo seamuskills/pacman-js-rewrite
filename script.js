@@ -35,6 +35,9 @@ let speedRamp = 0
 let rampValues = ["off","ghost","level"] //off = no ramp, ghost = ramp up on ghost eaten, level = ramp up on level progression
 let speedIncreaseAmount = 0.01 //how fast it increases
 let ghostsRamp = 4 //amount of ghosts needing to be eaten to speed ramp up
+let sprites
+let useSprites = true
+let loaded = false
 
 if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
@@ -43,12 +46,14 @@ if (localStorage.getItem("settings") == null){
 	localStorage.setItem("startLevel",startLevel)
 	localStorage.setItem("speedRamp",speedRamp)
 	localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)
+  localStorage.setItem("useSprites",true)
 }else{
 	dotWave = Boolean(localStorage.getItem("dotWave"))
 	livesEnabled = Boolean(localStorage.getItem("livesEnabled"))
 	startLevel = Number(localStorage.getItem("startLevel"))
 	speedRamp = localStorage.getItem("speedRamp")
 	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
+  useSprites = Boolean(localStorage.getItem("useSprites"))
 }
 
 window.onkeydown = ({key}) => { //on key down
@@ -179,8 +184,83 @@ function reset(full=false){ //reset the game
 
 function preload(){ //preload the custom pacman font :)
 	font = loadFont("font.ttf")
+  sprites = {
+    "blinky":[
+      loadImage("sprites/ghosts/blinky/00.png"),
+      loadImage("sprites/ghosts/blinky/01.png"),
+      loadImage("sprites/ghosts/blinky/10.png"),
+      loadImage("sprites/ghosts/blinky/11.png"),
+      loadImage("sprites/ghosts/blinky/20.png"),
+      loadImage("sprites/ghosts/blinky/21.png"),
+      loadImage("sprites/ghosts/blinky/30.png"),
+      loadImage("sprites/ghosts/blinky/31.png")
+    ],
+    "pinky":[
+      loadImage("sprites/ghosts/pinky/00.png"),
+      loadImage("sprites/ghosts/pinky/01.png"),
+      loadImage("sprites/ghosts/pinky/10.png"),
+      loadImage("sprites/ghosts/pinky/11.png"),
+      loadImage("sprites/ghosts/pinky/20.png"),
+      loadImage("sprites/ghosts/pinky/21.png"),
+      loadImage("sprites/ghosts/pinky/30.png"),
+      loadImage("sprites/ghosts/pinky/31.png")
+    ],
+    "inky":[
+      loadImage("sprites/ghosts/inky/00.png"),
+      loadImage("sprites/ghosts/inky/01.png"),
+      loadImage("sprites/ghosts/inky/10.png"),
+      loadImage("sprites/ghosts/inky/11.png"),
+      loadImage("sprites/ghosts/inky/20.png"),
+      loadImage("sprites/ghosts/inky/21.png"),
+      loadImage("sprites/ghosts/inky/30.png"),
+      loadImage("sprites/ghosts/inky/31.png")
+    ],
+    "clyde":[
+      loadImage("sprites/ghosts/clyde/00.png"),
+      loadImage("sprites/ghosts/clyde/01.png"),
+      loadImage("sprites/ghosts/clyde/10.png"),
+      loadImage("sprites/ghosts/clyde/11.png"),
+      loadImage("sprites/ghosts/clyde/20.png"),
+      loadImage("sprites/ghosts/clyde/21.png"),
+      loadImage("sprites/ghosts/clyde/30.png"),
+      loadImage("sprites/ghosts/clyde/31.png")
+    ],
+    "fright":[
+      loadImage("sprites/ghosts/fright/00.png"),
+      loadImage("sprites/ghosts/fright/01.png"),
+      loadImage("sprites/ghosts/fright/10.png"),
+      loadImage("sprites/ghosts/fright/11.png")
+    ],
+    "eyes":[
+      loadImage("sprites/ghosts/eyes/0.png"),
+      loadImage("sprites/ghosts/eyes/1.png"),
+      loadImage("sprites/ghosts/eyes/2.png"),
+      loadImage("sprites/ghosts/eyes/3.png")
+    ]
+  }
+  setTimeout(() => { //load seperately to avoid 429 too many requests
+    sprites.pacwalk = [
+      loadImage("sprites/pacman/normal/0.png"),
+      loadImage("sprites/pacman/normal/1.png"),
+      loadImage("sprites/pacman/normal/2.png")
+    ]
+    sprites.pacdeath = [
+      loadImage("sprites/pacman/death/0.png"),
+      loadImage("sprites/pacman/death/1.png"),
+      loadImage("sprites/pacman/death/2.png"),
+      loadImage("sprites/pacman/death/3.png"),
+      loadImage("sprites/pacman/death/4.png"),
+      loadImage("sprites/pacman/death/5.png"),
+      loadImage("sprites/pacman/death/6.png"),
+      loadImage("sprites/pacman/death/7.png"),
+      loadImage("sprites/pacman/death/8.png"),
+      loadImage("sprites/pacman/death/9.png"),
+      loadImage("sprites/pacman/death/10.png")
+    ]
+    loaded = true
+  }, 1000)
 }
-	
+
 function setup(){ //setup the game
 	resizeCanvas(window.innerWidth,window.innerHeight) //resize canvas to window size
 	strokeWeight(1) //set line weight for text mainly
@@ -190,9 +270,14 @@ function setup(){ //setup the game
 	angleMode(DEGREES) //set angle mode
 	textFont(font) //use the pacman font
 	textAlign(CENTER,CENTER) //align text centered
+  noSmooth()
+  imageMode(CENTER)
 }
 
 function draw(){
+  if (!loaded){ //make sure the pacman sprites loaded correctly
+    return
+  }
 	if (gameState == "game"){
 		game()
 	}
@@ -260,6 +345,7 @@ function game(){ //mainloop
 	}
 	p.show()
 
+  noStroke()
 	for (i of texts){ //show display texts
 		i.show()
 	}
