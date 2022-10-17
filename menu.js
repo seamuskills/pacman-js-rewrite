@@ -46,9 +46,9 @@ drawMenuButtons = () => {
 	for (let i=0; i < len;i++){
 		selectedIndex == i ? fill(0xff,0xff,0x00) : fill(0x55)
 		if (Object.keys(buttons[menuIndex])[i][0] == "`"){
-			text(eval(Object.keys(buttons[menuIndex])[i]),width/2,height*0.25+((height/len)*0.2*(i+1)))
+			text(eval(Object.keys(buttons[menuIndex])[i]),width/2,height*0.25+((height/len)*0.3*(i+1)))
 		}else{
-			text(Object.keys(buttons[menuIndex])[i],width/2,height*0.25+((height/len)*0.2*(i+1)))
+			text(Object.keys(buttons[menuIndex])[i],width/2,height*0.25+((height/len)*0.3*(i+1)))
 		}
 	}
 	if (changeCooldown <= 0 && input.includes("s")){
