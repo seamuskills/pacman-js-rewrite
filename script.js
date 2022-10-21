@@ -168,10 +168,10 @@ function reset(full=false){ //reset the game
 	inters = [] //clear intersections
 	tunnels = [] //clear tunnel instances
 	ghosts = [] //clear ghosts
-	dotScore = 10
 	if (full){ //if full
 		dots = [] //clear dots
     if (lives <= 0){
+      dotScore = 10
 		  level = startLevel //reset level
 		  gameSpeed = 0.1
       lives = 3 //reset lives
