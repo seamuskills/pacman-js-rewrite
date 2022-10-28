@@ -5,14 +5,14 @@ let selectedIndex = 0
 
 buttons = {
 	"main":{
-		"play": () => {gameState = "game"; lives = 0; reset(1)},
+		"play": () => {gameState = "game"; lives = 0; reset(true);},
 		"options": () => {menuIndex = "options";selectedIndex = 0}
 	},
 	"options":{
 		"back": () => {menuIndex = "main";selectedIndex = 0},
 		"`wavey dots enabled:${dotWave}`": () => {dotWave = !dotWave; localStorage.setItem("dotWave",String(dotWave))},
 		"`lives enabled:${livesEnabled}`": () => {livesEnabled = !livesEnabled; localStorage.setItem("livesEnabled",String(livesEnabled))},
-		"`starting speed:x${round(gameSpeed * 10,1)}`": () => {gameSpeed += 0.01; if (gameSpeed > 0.2){gameSpeed = 0.1}},
+		"`starting speed:x${round(startSpeed * 10,1)}`": () => {startSpeed += 0.01; if (startSpeed > 0.2){startSpeed = 0.1}},
 		"`starting level:${startLevel}`" : changeLevel,
 		"`speed added per ramp: +${round(speedIncreaseAmount * 10,3)}`": () => {speedIncreaseAmount += 0.001; if (speedIncreaseAmount > 0.1){speedIncreaseAmount = 0.01}; speedIncreaseAmount = round(speedIncreaseAmount,3); localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)},
 		"`speed ramp setting: ${rampValues[speedRamp]}`": () => {speedRamp = (speedRamp + 1) % 3; localStorage.setItem("speedRamp",speedRamp)},

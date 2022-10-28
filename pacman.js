@@ -104,9 +104,10 @@ class player{ //defining the player
 		this.deadTicks++ //increase dead ticks
 		if (this.deadTicks > 180){ //have I been dead for a minimum of 2 seconds
 			if (livesEnabled == true){lives--} //subtract a life
-      print(livesEnabled)
-      print(livesEnabled == true)
-			reset(lives < 1) //reset (only full reset if 0 lives left)
+      gameSpeed = max(round(gameSpeed - speedIncreaseAmount,3),0.1)
+			dotScore = max(dotScore - 10, 10)
+      dotsToRamp = 10
+      reset(lives < 1) //reset (only full reset if 0 lives left)
 			intro = true //we are in the intro again
 		}
 	}

@@ -38,6 +38,7 @@ let ghostsRamp = 4 //amount of ghosts needing to be eaten to speed ramp up
 let sprites
 let useSprites = true
 let loaded = false
+let startSpeed = 0.1
 
 if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
@@ -96,7 +97,7 @@ class dispText{ //display text
 		this.pos = dispCoords(createVector(x,y),true) //where is it?
 		this.time = time //how long it should display?
 		texts.push(this) //add it to the list
-		this.size = size
+		this.size = size  
 	}
 	show(){ //display
 		textSize(this.size*CELL)
@@ -168,12 +169,14 @@ function reset(full=false){ //reset the game
 	inters = [] //clear intersections
 	tunnels = [] //clear tunnel instances
 	ghosts = [] //clear ghosts
+  introTicks = 0 //reset intro time
+  intro = true
 	if (full){ //if full
 		dots = [] //clear dots
     if (lives <= 0){
       dotScore = 10
 		  level = startLevel //reset level
-		  gameSpeed = 0.1
+      gameSpeed = startSpeed
       lives = 3 //reset lives
       score = 0
     }
@@ -306,6 +309,7 @@ function game(){ //mainloop
 
 	if (paused && input.includes("Backspace")){
 		paused = false
+    gateText = ""
 		gameState = "menu"
 	}
 	
