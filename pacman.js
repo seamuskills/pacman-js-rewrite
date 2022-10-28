@@ -120,11 +120,10 @@ class player{ //defining the player
         anim = max(((this.deadTicks-60) / 120),0) * 10
         image(sprites.pacdeath[round(anim)],disp.x,disp.y,CELL*2,CELL*2)
       }else{
-        push()
-        translate(disp.x, disp.y)
-        rotate(this.dir * -90)
-        image(sprites.pacwalk[round(abs(sin(ticks*10))*2)],0,0,CELL*2,CELL*2)
-        pop()
+        let frame = round(abs(sin(ticks*10)*2))
+        let directionMod = (this.dir * 2)+1
+        let sprite = sprites.pacwalk[frame == 0 ? 0 : directionMod + max(0,frame - 1)]
+        image(sprite,disp.x, disp.y,CELL*2,CELL*2)
       }
       return
     }

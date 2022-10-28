@@ -40,6 +40,10 @@ let useSprites = true
 let loaded = false
 let startSpeed = 0.1
 
+function toBool(string){
+  return string == "true" ? true : false
+}
+
 if (localStorage.getItem("settings") == null){
 	localStorage.setItem("settings","true")
 	localStorage.setItem("dotWave",String(dotWave))
@@ -49,12 +53,12 @@ if (localStorage.getItem("settings") == null){
 	localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)
   localStorage.setItem("useSprites",true)
 }else{
-	dotWave = Boolean(localStorage.getItem("dotWave"))
-	livesEnabled = Boolean(localStorage.getItem("livesEnabled"))
-	startLevel = Number(localStorage.getItem("startLevel"))
+	dotWave = toBool(localStorage.getItem("dotWave"))
+	livesEnabled = toBool(localStorage.getItem("livesEnabled"))
+	startLevel = toBool(localStorage.getItem("startLevel"))
 	speedRamp = localStorage.getItem("speedRamp")
 	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
-  useSprites = Boolean(localStorage.getItem("useSprites"))
+  useSprites = toBool(localStorage.getItem("useSprites"))
 }
 
 window.onkeydown = ({key}) => { //on key down
@@ -244,8 +248,14 @@ function preload(){ //preload the custom pacman font :)
   setTimeout(() => { //load seperately to avoid 429 too many requests
     sprites.pacwalk = [
       loadImage("sprites/pacman/normal/0.png"),
-      loadImage("sprites/pacman/normal/1.png"),
-      loadImage("sprites/pacman/normal/2.png")
+      loadImage("sprites/pacman/normal/00.png"),
+      loadImage("sprites/pacman/normal/01.png"),
+      loadImage("sprites/pacman/normal/10.png"),
+      loadImage("sprites/pacman/normal/11.png"),
+      loadImage("sprites/pacman/normal/20.png"),
+      loadImage("sprites/pacman/normal/21.png"),
+      loadImage("sprites/pacman/normal/30.png"),
+      loadImage("sprites/pacman/normal/31.png")
     ]
     sprites.pacdeath = [
       loadImage("sprites/pacman/death/0.png"),
