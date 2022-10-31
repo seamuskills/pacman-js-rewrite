@@ -55,7 +55,7 @@ if (localStorage.getItem("settings") == null){
 }else{
 	dotWave = toBool(localStorage.getItem("dotWave"))
 	livesEnabled = toBool(localStorage.getItem("livesEnabled"))
-	startLevel = toBool(localStorage.getItem("startLevel"))
+	startLevel = Number(localStorage.getItem("startLevel"))
 	speedRamp = localStorage.getItem("speedRamp")
 	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
   useSprites = toBool(localStorage.getItem("useSprites"))
