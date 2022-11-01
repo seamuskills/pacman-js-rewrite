@@ -77,6 +77,9 @@ function setupMap(resetDots){ //set up the map
 						new powerPellet(x+0.5,y+0.5)
 					}
 				break
+        case "f":
+          fruitSpawn = [x,y]
+        break
 			}
 		}
 	}

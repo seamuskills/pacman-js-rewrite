@@ -39,6 +39,7 @@ let sprites
 let useSprites = true
 let loaded = false
 let startSpeed = 0.1
+let fruitSpawn = [0,0]
 
 function toBool(string){
   return string == "true" ? true : false
@@ -56,7 +57,7 @@ if (localStorage.getItem("settings") == null){
 	dotWave = toBool(localStorage.getItem("dotWave"))
 	livesEnabled = toBool(localStorage.getItem("livesEnabled"))
 	startLevel = Number(localStorage.getItem("startLevel"))
-	speedRamp = localStorage.getItem("speedRamp")
+	speedRamp = Number(localStorage.getItem("speedRamp"))
 	speedIncreaseAmount = Number(localStorage.getItem("speedIncreaseAmount"))
   useSprites = toBool(localStorage.getItem("useSprites"))
 }

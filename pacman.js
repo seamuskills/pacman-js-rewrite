@@ -5,6 +5,8 @@ class player{ //defining the player
 		this.dirWanted = 0 //direction the player wants to go next
 		this.dead = false //am I dead?
 		this.deadTicks = 0 //how long have I been dead?
+    this.animDir = 1
+    this.anim = 0
 	}
 	update(){ //update loop
 		for (let i=0;i<4;i++){ //detect what the player wants to do next
@@ -120,9 +122,10 @@ class player{ //defining the player
         anim = max(((this.deadTicks-60) / 120),0) * 10
         image(sprites.pacdeath[round(anim)],disp.x,disp.y,CELL*2,CELL*2)
       }else{
-        let frame = round(abs(sin(ticks*10)*2))
+        this.anim += ticks % 5 == 0 ? this.animDir : 0
+        if (ticks % 5 == 0){this.animDir *= this.anim == 0 || this.anim == 2 ? -1 : 1}
         let directionMod = (this.dir * 2)+1
-        let sprite = sprites.pacwalk[frame == 0 ? 0 : directionMod + max(0,frame - 1)]
+        let sprite = sprites.pacwalk[this.anim == 0 ? 0 : directionMod + this.anim-1]
         image(sprite,disp.x, disp.y,CELL*2,CELL*2)
       }
       return
