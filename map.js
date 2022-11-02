@@ -12,8 +12,8 @@ const textMap =[ //text map
 '-----0.00000-0-00000.0-----',
 '-----0.00+--+b+--+00.0-----',
 '-----0.00|000_000|00.0-----',
-'000000.00|0111110|00.000000',
-'tttttt+--+01aic10+--+tttttt',
+'000000.00|0--i--0|00.000000',
+'tttttt+--+0-agc-0+--+tttttt',
 '000000.00|0000000|00.000000',
 '-----0.00+---f---+00.0-----',
 '-----0.00-0000000-00.0hello',
@@ -62,6 +62,7 @@ function setupMap(resetDots){ //set up the map
 				break
 				case "b": //b = blinky
 					new ghost(x,y,0)
+          new Intersection(x,y)
 				break
 				case "a": //a = pinky
 					new ghost(x,y,1)
@@ -79,6 +80,13 @@ function setupMap(resetDots){ //set up the map
 				break
         case "f":
           fruitSpawn = [x,y]
+        break
+        case "g":
+          penLoc = [x,y]
+          new Intersection(x,y)
+        break
+        case "_":
+          new penGate(x,y)
         break
 			}
 		}
@@ -104,6 +112,14 @@ class wall{ //create a wall that just displays to the screen
 	show(){
 		rect(this.disp.x,this.disp.y,CELL,CELL)
 	}
+}
+
+class penGate extends wall{
+  show(){
+    fill(0xff,0xc0,0xcb)
+    rect(this.disp.x,this.disp.y+7,CELL,CELL*0.2)
+    fill(0x0,0x0,0xff)
+  }
 }
 
 inters = [] //list of intersections

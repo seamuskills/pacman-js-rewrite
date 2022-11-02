@@ -40,6 +40,7 @@ let useSprites = true
 let loaded = false
 let startSpeed = 0.1
 let fruitSpawn = [0,0]
+let penLoc = [0,0] //ghost pen location
 
 function toBool(string){
   return string == "true" ? true : false

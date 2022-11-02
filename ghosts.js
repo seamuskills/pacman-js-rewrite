@@ -38,14 +38,14 @@ class ghost{
 	}
 	exitPen(){ //exiting the ghost pen
 		this.pen = false //im not in the pen anymore
-		this.pos = createVector(13,14) //position correctly
+		this.pos = createVector(penLoc[0],penLoc[1]) //position correctly
 		this.exit = true //I am exiting
 	}
 	exiting(){ //ghosts mid exit
-		if (this.pos.y > 11){ //am I out of the pen yet?
+		if (this.pos.y > penLoc[1]-3){ //am I out of the pen yet?
 			this.pos.y -= gameSpeed //move up if not
 		}else{ //if I am clear of the pen
-			this.pos.y = 11 //The game doesn't like it if I don't make sure the ghost is exactly on y=11
+			this.pos.y = penLoc[1]-3 //The game doesn't like it if I don't make sure the ghost is exactly on y=11
 			this.exit = false //no longer exiting.
 		}
 	}
@@ -78,11 +78,11 @@ class ghost{
 		}
 	}
 	setEyesTarget(){ //set target for if a ghost is in its eyes state
-		this.target = createVector(13,14) //target the ghost pen
-		let rounded = this.pos.copy() //round the positional coordinates to avoid bugs with scientific notation with really really small numbers
-		rounded.x = round(rounded.x,2)
-		rounded.y = round(rounded.y,2)
-			if (rounded.dist(createVector(13,11)) < gameSpeed*5){ //if im near enough to the ghost pen
+		this.target = createVector(penLoc[0],penLoc[1]) //target the ghost pen
+		// let rounded = this.pos.copy() //round the positional coordinates to avoid bugs with scientific notation with really really small numbers
+		// rounded.x = round(rounded.x,2)
+		// rounded.y = round(rounded.y,2)
+			if (this.pos.dist(this.target) < 1){ //if im near enough to the ghost pen
 				this.eyes = false //I am no longer eyes
 				this.eaten = true //I am eaten so current power pellet doesn't work on me
 				this.exitPen() // run the code for exiting the pen
@@ -138,6 +138,9 @@ class ghost{
 					var valid = true //valid by default
 					var cv = i.pos.copy().add(createVector(0.5,0.5)).add(directionVectors[h]) //set up position for collision checking ahead of time
 					for (let w of walls){ //loop walls
+            if (this.eyes && w instanceof penGate){
+              continue
+            }
 						if (	collidePointRect(cv.x,cv.y,w.pos.x,w.pos.y,1,1)){ //if I would be inside a wall than this direction is no longer valid.
 							valid = false
 							break //no need to keep looping if I already know I cant move
