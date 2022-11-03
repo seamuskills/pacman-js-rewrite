@@ -41,20 +41,24 @@ let loaded = false
 let startSpeed = 0.1
 let fruitSpawn = [0,0]
 let penLoc = [0,0] //ghost pen location
+let useModulo = true
+let failLoad = false
 
 function toBool(string){
   return string == "true" ? true : false
 }
 
 if (localStorage.getItem("settings") == null){
-	localStorage.setItem("settings","true")
+	localStorage.setItem("settings",true)
 	localStorage.setItem("dotWave",String(dotWave))
 	localStorage.setItem("livesEnabled",String(livesEnabled))
 	localStorage.setItem("startLevel",startLevel)
 	localStorage.setItem("speedRamp",speedRamp)
 	localStorage.setItem("speedIncreaseAmount",speedIncreaseAmount)
   localStorage.setItem("useSprites",true)
+  localStorage.setItem("useModulo",true)
 }else{
+  useModulo = toBool(localStorage.getItem("useModulo"))
 	dotWave = toBool(localStorage.getItem("dotWave"))
 	livesEnabled = toBool(localStorage.getItem("livesEnabled"))
 	startLevel = Number(localStorage.getItem("startLevel"))
@@ -193,87 +197,92 @@ function reset(full=false){ //reset the game
 
 function preload(){ //preload the custom pacman font :)
 	font = loadFont("font.ttf")
-  sprites = {
-    "blinky":[
-      loadImage("sprites/ghosts/blinky/00.png"),
-      loadImage("sprites/ghosts/blinky/01.png"),
-      loadImage("sprites/ghosts/blinky/10.png"),
-      loadImage("sprites/ghosts/blinky/11.png"),
-      loadImage("sprites/ghosts/blinky/20.png"),
-      loadImage("sprites/ghosts/blinky/21.png"),
-      loadImage("sprites/ghosts/blinky/30.png"),
-      loadImage("sprites/ghosts/blinky/31.png")
-    ],
-    "pinky":[
-      loadImage("sprites/ghosts/pinky/00.png"),
-      loadImage("sprites/ghosts/pinky/01.png"),
-      loadImage("sprites/ghosts/pinky/10.png"),
-      loadImage("sprites/ghosts/pinky/11.png"),
-      loadImage("sprites/ghosts/pinky/20.png"),
-      loadImage("sprites/ghosts/pinky/21.png"),
-      loadImage("sprites/ghosts/pinky/30.png"),
-      loadImage("sprites/ghosts/pinky/31.png")
-    ],
-    "inky":[
-      loadImage("sprites/ghosts/inky/00.png"),
-      loadImage("sprites/ghosts/inky/01.png"),
-      loadImage("sprites/ghosts/inky/10.png"),
-      loadImage("sprites/ghosts/inky/11.png"),
-      loadImage("sprites/ghosts/inky/20.png"),
-      loadImage("sprites/ghosts/inky/21.png"),
-      loadImage("sprites/ghosts/inky/30.png"),
-      loadImage("sprites/ghosts/inky/31.png")
-    ],
-    "clyde":[
-      loadImage("sprites/ghosts/clyde/00.png"),
-      loadImage("sprites/ghosts/clyde/01.png"),
-      loadImage("sprites/ghosts/clyde/10.png"),
-      loadImage("sprites/ghosts/clyde/11.png"),
-      loadImage("sprites/ghosts/clyde/20.png"),
-      loadImage("sprites/ghosts/clyde/21.png"),
-      loadImage("sprites/ghosts/clyde/30.png"),
-      loadImage("sprites/ghosts/clyde/31.png")
-    ],
-    "fright":[
-      loadImage("sprites/ghosts/fright/00.png"),
-      loadImage("sprites/ghosts/fright/01.png"),
-      loadImage("sprites/ghosts/fright/10.png"),
-      loadImage("sprites/ghosts/fright/11.png")
-    ],
-    "eyes":[
-      loadImage("sprites/ghosts/eyes/0.png"),
-      loadImage("sprites/ghosts/eyes/1.png"),
-      loadImage("sprites/ghosts/eyes/2.png"),
-      loadImage("sprites/ghosts/eyes/3.png")
-    ]
+  try{
+    sprites = {
+      "blinky":[
+        loadImage("sprites/ghosts/blinky/00.png"),
+        loadImage("sprites/ghosts/blinky/01.png"),
+        loadImage("sprites/ghosts/blinky/10.png"),
+        loadImage("sprites/ghosts/blinky/11.png"),
+        loadImage("sprites/ghosts/blinky/20.png"),
+        loadImage("sprites/ghosts/blinky/21.png"),
+        loadImage("sprites/ghosts/blinky/30.png"),
+        loadImage("sprites/ghosts/blinky/31.png")
+      ],
+      "pinky":[
+        loadImage("sprites/ghosts/pinky/00.png"),
+        loadImage("sprites/ghosts/pinky/01.png"),
+        loadImage("sprites/ghosts/pinky/10.png"),
+        loadImage("sprites/ghosts/pinky/11.png"),
+        loadImage("sprites/ghosts/pinky/20.png"),
+        loadImage("sprites/ghosts/pinky/21.png"),
+        loadImage("sprites/ghosts/pinky/30.png"),
+        loadImage("sprites/ghosts/pinky/31.png")
+      ],
+      "inky":[
+        loadImage("sprites/ghosts/inky/00.png"),
+        loadImage("sprites/ghosts/inky/01.png"),
+        loadImage("sprites/ghosts/inky/10.png"),
+        loadImage("sprites/ghosts/inky/11.png"),
+        loadImage("sprites/ghosts/inky/20.png"),
+        loadImage("sprites/ghosts/inky/21.png"),
+        loadImage("sprites/ghosts/inky/30.png"),
+        loadImage("sprites/ghosts/inky/31.png")
+      ],
+      "clyde":[
+        loadImage("sprites/ghosts/clyde/00.png"),
+        loadImage("sprites/ghosts/clyde/01.png"),
+        loadImage("sprites/ghosts/clyde/10.png"),
+        loadImage("sprites/ghosts/clyde/11.png"),
+        loadImage("sprites/ghosts/clyde/20.png"),
+        loadImage("sprites/ghosts/clyde/21.png"),
+        loadImage("sprites/ghosts/clyde/30.png"),
+        loadImage("sprites/ghosts/clyde/31.png")
+      ],
+      "fright":[
+        loadImage("sprites/ghosts/fright/00.png"),
+        loadImage("sprites/ghosts/fright/01.png"),
+        loadImage("sprites/ghosts/fright/10.png"),
+        loadImage("sprites/ghosts/fright/11.png")
+      ],
+      "eyes":[
+        loadImage("sprites/ghosts/eyes/0.png"),
+        loadImage("sprites/ghosts/eyes/1.png"),
+        loadImage("sprites/ghosts/eyes/2.png"),
+        loadImage("sprites/ghosts/eyes/3.png")
+      ]
+    }
+    setTimeout(() => { //load seperately to avoid 429 too many requests
+      sprites.pacwalk = [
+        loadImage("sprites/pacman/normal/0.png"),
+        loadImage("sprites/pacman/normal/00.png"),
+        loadImage("sprites/pacman/normal/01.png"),
+        loadImage("sprites/pacman/normal/10.png"),
+        loadImage("sprites/pacman/normal/11.png"),
+        loadImage("sprites/pacman/normal/20.png"),
+        loadImage("sprites/pacman/normal/21.png"),
+        loadImage("sprites/pacman/normal/30.png"),
+        loadImage("sprites/pacman/normal/31.png")
+      ]
+      sprites.pacdeath = [
+        loadImage("sprites/pacman/death/0.png"),
+        loadImage("sprites/pacman/death/1.png"),
+        loadImage("sprites/pacman/death/2.png"),
+        loadImage("sprites/pacman/death/3.png"),
+        loadImage("sprites/pacman/death/4.png"),
+        loadImage("sprites/pacman/death/5.png"),
+        loadImage("sprites/pacman/death/6.png"),
+        loadImage("sprites/pacman/death/7.png"),
+        loadImage("sprites/pacman/death/8.png"),
+        loadImage("sprites/pacman/death/9.png"),
+        loadImage("sprites/pacman/death/10.png")
+      ]
+      loaded = true
+    }, 1000)
+  }catch(e){
+    alert("your network didn't let the sprites load, will play without sprites, reload to retry")
+    failLoad = true
   }
-  setTimeout(() => { //load seperately to avoid 429 too many requests
-    sprites.pacwalk = [
-      loadImage("sprites/pacman/normal/0.png"),
-      loadImage("sprites/pacman/normal/00.png"),
-      loadImage("sprites/pacman/normal/01.png"),
-      loadImage("sprites/pacman/normal/10.png"),
-      loadImage("sprites/pacman/normal/11.png"),
-      loadImage("sprites/pacman/normal/20.png"),
-      loadImage("sprites/pacman/normal/21.png"),
-      loadImage("sprites/pacman/normal/30.png"),
-      loadImage("sprites/pacman/normal/31.png")
-    ]
-    sprites.pacdeath = [
-      loadImage("sprites/pacman/death/0.png"),
-      loadImage("sprites/pacman/death/1.png"),
-      loadImage("sprites/pacman/death/2.png"),
-      loadImage("sprites/pacman/death/3.png"),
-      loadImage("sprites/pacman/death/4.png"),
-      loadImage("sprites/pacman/death/5.png"),
-      loadImage("sprites/pacman/death/6.png"),
-      loadImage("sprites/pacman/death/7.png"),
-      loadImage("sprites/pacman/death/8.png"),
-      loadImage("sprites/pacman/death/9.png"),
-      loadImage("sprites/pacman/death/10.png")
-    ]
-    loaded = true
-  }, 1000)
 }
 
 function setup(){ //setup the game
@@ -290,8 +299,10 @@ function setup(){ //setup the game
 }
 
 function draw(){
-  if (!loaded){ //make sure the pacman sprites loaded correctly
+  if (!loaded && !failLoad){ //make sure the pacman sprites loaded correctly
     return
+  }else if (failLoad){
+    useSprites = false
   }
 	if (gameState == "game"){
 		game()

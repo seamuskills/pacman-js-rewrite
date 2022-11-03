@@ -80,7 +80,11 @@ class player{ //defining the player
 		for (let i of ghosts){ //loop ghosts
 			let roundedPac = createVector(round(this.pos.x),round(this.pos.y)) //round pac position
 			let roundedGhost = createVector(round(i.pos.x),round(i.pos.y)) //round ghost position
-			if (roundedGhost.dist(roundedPac) < 0.1){ //are they in the same tile?
+			let col = roundedGhost.dist(roundedPac) < 0.1
+      if (useModulo == false){
+        col = collideRectRect(this.pos.x,this.pos.y,1,1,i.pos.x,i.pos.y,1,1)
+      }
+      if (roundedGhost.dist(roundedPac) < 0.1){ //are they in the same tile?
 				if (fright > 0 && i.eyes == false && i.eaten == false){ //if they are frightened and not eyes or eaten
 					stopped = true //stop game
 					setTimeout(() => {stopped = false},500) //unstop game after 500 ms
