@@ -8,6 +8,12 @@ let directions = { //controls
 	"a":2,
 	"s":3
 }
+let arrowDirections = { //controls
+	"ArrowRight":0,
+	"ArrowUp":1,
+	"ArrowLeft":2,
+	"ArrowDown":3
+}
 let directionVectors = [] //direction vectors (used in setup function)
 let ticks = 0 //game ticks passed
 let gameSpeed = 0.1 //speed at which the game runs (not framerate)
@@ -43,6 +49,38 @@ let fruitSpawn = [0,0]
 let penLoc = [0,0] //ghost pen location
 let useModulo = true
 let failLoad = false
+let url = new URL(window.location.href)
+if (url.searchParams.getAll("code").length > 0){
+  var levelCode = url.searchParams.getAll("code")[0]
+  levelCode = levelCode.split("-")
+  var validPlayer = false
+  let dots = false
+  let respawnpoint = false
+  for (i of levelCode){
+    levelCode[levelCode.indexOf(i)] = atob(i)
+    strI = atob(i)
+    if (strI.includes("p")){
+      validPlayer = true
+    }
+    if (strI.includes(".")){
+      dots = true
+    }
+    if (strI.includes("g")){
+      respawnpoint = true
+    }
+  }
+  
+  if (validPlayer && dots && respawnpoint){
+    console.log("code loaded: "+levelCode)
+    textMap = levelCode
+    delete buttons.main
+    buttons.main = {} //both need to be recreated to get them in the correct order.
+    buttons.main["play custom level"] = () => {gameState = "game"; lives = 0; reset(true)}
+    buttons.main["options"] = () => {menuIndex = "options";selectedIndex = 0}
+  }else{
+    alert("the current level code could not be loaded because it is missing elements required for a valid level. "+`pacman:${validPlayer}, dots:${dots}`+`, ghost respawn point:${respawnpoint}`)
+  }
+}
 
 function toBool(string){
   return string == "true" ? true : false
@@ -285,6 +323,8 @@ function preload(){ //preload the custom pacman font :)
   }
 }
 
+let cam
+
 function setup(){ //setup the game
 	resizeCanvas(window.innerWidth,window.innerHeight) //resize canvas to window size
 	strokeWeight(1) //set line weight for text mainly
@@ -296,6 +336,7 @@ function setup(){ //setup the game
 	textAlign(CENTER,CENTER) //align text centered
   noSmooth()
   imageMode(CENTER)
+  cam = createVector()
 }
 
 function draw(){
@@ -313,7 +354,9 @@ function draw(){
 }
 
 function game(){ //mainloop
-	ticks++ //count up ticks
+  cam.set((p.pos.x+anchor)*CELL - width/2,p.pos.y*CELL - height/2)
+	translate(cam.copy().mult(-1))
+  ticks++ //count up ticks
 	background(0) //make bg black
 	if (intro){// if im in the intro
 		if (!paused){ //if im not paused
@@ -392,24 +435,29 @@ function game(){ //mainloop
 			},3000)
 		}
 	}
-	
-	noStroke() //no line full white
-	fill(0xff)
-	
-	textSize(CELL/2) //set text size
-	text(gateText,(anchor+13+0.5)*CELL,16.5*CELL) //draw gate text
+  
+  textSize(CELL*2)
+  stroke(0xff,0xa5,0x0)
+  strokeWeight(CELL/4)
+  fill(0xff,0xff,0x0)
+  
+  text(gateText,cam.x+width/2,cam.y+height/2) //draw gate text
 
-	text(`level: ${level}`,((anchor + textMap[0].length + 0.5) *CELL)-font.textBounds(`level: ${level}`,0,0,CELL/2).w,(textMap.length+ 0.5)*CELL)
-	text (`{${score}}`,window.innerWidth/2,(textMap.length+ 0.5)*CELL)
+  noStroke() //no line full white
+  fill(0xff)
+	textSize(CELL/2) //set text size
+	
+	text(`level: ${level}`,cam.x+((anchor + textMap[0].length + 0.5) *CELL)-font.textBounds(`level: ${level}`,0,0,CELL/2).w,cam.y+(height-CELL))
+	text (`{${score}}`,cam.x+(width/2),cam.y+(height-CELL))
 	
 	if (frameRate() < 30){
 		fill(0xff,0,0)
 	}
-	text(`${round(frameRate())}`,CELL,CELL) //show framerate
+	text(`${round(frameRate())}`,cam.x+CELL,cam.y+CELL) //show framerate
 	fill(0xff)
 
 	if (speedRamp != 0){
-		text(`${round(gameSpeed*10,1)}`,CELL*2,window.innerHeight/2)
+		text(`${round(gameSpeed*10,1)}`,cam.x+CELL*2,cam.y+height/2)
 	}
 	
 	textSize(CELL) //reset text size

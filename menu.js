@@ -52,11 +52,11 @@ drawMenuButtons = () => {
 			text(Object.keys(buttons[menuIndex])[i],width/2,height*0.25+((height/len)*0.3*(i+1)))
 		}
 	}
-	if (changeCooldown <= 0 && input.includes("s")){
+	if (changeCooldown <= 0 && (input.includes("ArrowDown") || input.includes("s"))){
 		changeCooldown = 15
 		selectedIndex++
 	}
-	if (changeCooldown <= 0 && input.includes("w")){
+	if (changeCooldown <= 0 && (input.includes("ArrowUp") || input.includes("w"))){
 		changeCooldown = 15
 		selectedIndex--
 	}

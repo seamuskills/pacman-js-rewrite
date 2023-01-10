@@ -11,9 +11,13 @@ class player{ //defining the player
 	update(){ //update loop
 		for (let i=0;i<4;i++){ //detect what the player wants to do next
 			let keys = Object.keys(directions)
-			if (input.includes(keys[i])){
+			let arrowKeys = Object.keys(arrowDirections)
+      if (input.includes(keys[i])){
 				this.dirWanted = directions[keys[i]]
 			}
+      if (input.includes(arrowKeys[i])){
+        this.dirWanted = arrowDirections[arrowKeys[i]]
+      }
 		}
 		if (this.dirWanted != this.dir){ //make sure we arent already going that direction
 			if (this.dirWanted == (this.dir + 2)%4){ //pacman is always permitted to reverse direction
@@ -52,8 +56,11 @@ class player{ //defining the player
 		if (move){ //If I should move
 			this.pos.add(cast) //move by cast
 		}
-		if (this.pos.x > textMap[0].length+1){this.pos.x = -1} //screenwrap
-		if (this.pos.x < -1) {this.pos.x = textMap[0].length+1}
+		if (this.pos.x > textMap[0].length){this.pos.x = -1} //screenwrap
+		if (this.pos.x < -1) {this.pos.x = textMap[0].length}
+
+    if (this.pos.y > textMap.length){this.pos.y = -1}
+    if (this.pos.y < -1){this.pos.y = textMap.length}
 
 		for (let i of dots){ //loop dots
 			if (i.pos.dist(this.pos.copy().add(createVector(0.5,0.5))) < 0.5){ //check if inside dot

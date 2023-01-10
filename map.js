@@ -1,4 +1,4 @@
-const textMap =[ //text map
+let textMap =[ //text map
 '000000000000000000000000000',
 '0+....+.....+0+.....+....+0',
 '0O0000.00000.0.00000.0000O0',
@@ -31,6 +31,19 @@ const textMap =[ //text map
 '000000000000000000000000000'
 ];
 
+function isValid(x,y){
+  if (x < 0 || y < 0){
+    return false
+  }
+  if (y > textMap.length - 1){
+    return false
+  }
+  
+  if (x > textMap[y].length - 1){
+    return false
+  }
+  return true
+}
 
 function setupMap(resetDots){ //set up the map
 	let x
@@ -49,7 +62,29 @@ function setupMap(resetDots){ //set up the map
 				case "+": //+ = intersection
 					new Intersection(x,y)
 					if (resetDots){ //if reset dots we want a dot on the intersections surrounded by dots
-						if (textMap[y-1][x] == "." || textMap[y+1][x] == "." || textMap[y][x+1] == "." || textMap[y][x-1] == "."){
+            var placedot = false
+            if (isValid(x,y-1)){
+              if (textMap[y-1][x] == "."){
+                placedot = true
+              }
+            }
+            if (isValid(x,y+1)){
+              if (textMap[y+1][x] == "."){
+                placedot = true
+              }
+            }
+            if (isValid(x+1,y)){
+              if (textMap[y][x+1] == "."){
+                placedot = true
+              }
+            }
+            if (isValid(x-1,y)){
+              if (textMap[y][x-1] == "."){
+                placedot = true
+              }
+            }
+
+            if (placedot){
 							new dot(x+0.5,y+0.5)
 						}
 					}
@@ -164,6 +199,6 @@ class tunnel{ //tunnel blocks for if I implement the ghosts being able to go thr
 	show(){
 		fill(0xff,0xa5,0x0)
 		stroke(0xff,0xa5,0x0)
-			rect((anchor+this.pos.x)*CELL,this.pos.y*CELL,CELL,CELL)
+		rect((anchor+this.pos.x)*CELL,this.pos.y*CELL,CELL,CELL)
 	}
 }
