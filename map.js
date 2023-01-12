@@ -1,7 +1,7 @@
 let textMap =[ //text map
 '000000000000000000000000000',
 '0+....+.....+0+.....+....+0',
-'0O0000.00000.0.00000.0000O0',
+'0o0000.00000.0.00000.0000o0',
 '0.0000.00000.0.00000.0000.0',
 '0.0000.00000.0.00000.0000.0',
 '0+....+..+..+.+..+..+....+0',
@@ -16,10 +16,10 @@ let textMap =[ //text map
 'tttttt+--+0-agc-0+--+tttttt',
 '000000.00|0000000|00.000000',
 '-----0.00+---f---+00.0-----',
-'-----0.00-0000000-00.0hello',
+'-----0.00-0000000-00.0-----',
 '000000.00.0000000.00.000000',
 '0+....+..+..+0+..+..+....+0',
-'0O0000.00000.0.00000.0000O0',
+'0o0000.00000.0.00000.0000o0',
 '0.0000.00000.0.00000.0000.0',
 '0+.+00+..+..+p+..+..+00+.+0',
 '000.00.00.0000000.00.00.000',
@@ -50,7 +50,12 @@ function setupMap(resetDots){ //set up the map
 	let y
 	for (y=0;y < textMap.length;y++){ //loop through rows
 		for (x=0;x < textMap[y].length; x++){ //loop through coloums 
-			switch (textMap[y][x]){ //case for every valid text item
+      code = textMap[y][x]
+      if (code.match(/[A-Z]/)){
+        code = code.toLowerCase()
+        new Intersection(x,y)
+      }
+			switch (code){ //case for every valid text item
 				case "0": //0 = wall
 					new wall(x,y)
 				break
@@ -108,7 +113,7 @@ function setupMap(resetDots){ //set up the map
 				case "c": // c = clyde
 					new ghost(x,y,3)
 				break
-				case "O": // O = power pellet but only if doing a full reset
+				case "o": // o = power pellet but only if doing a full reset
 					if (resetDots){
 						new powerPellet(x+0.5,y+0.5)
 					}

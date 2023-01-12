@@ -58,7 +58,7 @@ if (url.searchParams.getAll("code").length > 0){
   let respawnpoint = false
   for (i of levelCode){
     levelCode[levelCode.indexOf(i)] = atob(i)
-    strI = atob(i)
+    strI = atob(i).toLowerCase()
     if (strI.includes("p")){
       validPlayer = true
     }
@@ -373,7 +373,7 @@ function game(){ //mainloop
 		}
 	}
 
-	if (paused && input.includes("Backspace")){
+	if (paused && (input.includes("Backspace")) || input.includes("delete")){
 		paused = false
     gateText = ""
 		gameState = "menu"
