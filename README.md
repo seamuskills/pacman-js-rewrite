@@ -1,5 +1,11 @@
 # pacman-js-rewrite
-A rewrite of my previous iteration of my pacman implementation in js
+My own version of Pac-Man, written in JavaScript
 
+## Controls (game)
+* WASD to move
+* Space to pause
+* Backspace (while paused) to return to menu
 
-find it hosted on replit: https://replit.com/@SeamusDonahue/pacman-rewrite?v=1
+## Controls (menu)
+* W and S to navigate button
+* Enter to use selected button.
