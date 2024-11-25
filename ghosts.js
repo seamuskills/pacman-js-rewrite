@@ -97,7 +97,7 @@ class ghost {
     }
 
     setScatterTarget() { //set target for scatter mode
-        this.target = createVector(this.type == 0 || this.type == 2 ? 100 : 0, this.type == 1 || this.type == 3 ? 100 : 0) //target the corners of the maze based on what ghost this is
+        this.target = createVector(this.type == 0 || this.type == 2 ? 1000 : 0, this.type == 1 || this.type == 3 ? 1000 : 0) //target the corners of the maze based on what ghost this is
     }
 
     update() { //mainloop of ghost behavior
@@ -144,7 +144,7 @@ class ghost {
                 this.scatter-- //decrease scatter time
                 this.setScatterTarget() //scatter
             }
-            if (fright > 0 && !this.eyes) { //if im in fright mode and not not eyes
+            if (fright > 0 && !this.eyes && !this.eaten) { //if im in fright mode and not not eyes
                 this.target = createVector(Math.random() * 25, Math.random() * 30) //go random direction because oooo powered up pacman scary!
             }
         }
